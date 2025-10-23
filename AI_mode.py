@@ -1,0 +1,32 @@
+
+import google.generativeai as genai
+import os
+import pyttsx3
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+gemini_model = genai.GenerativeModel("gemini-2.5-flash")
+
+engine = pyttsx3.init()
+
+def speak(text: str):
+    engine.say(text)
+    engine.runAndWait()
+
+def About(topic: str) -> str:
+    response = gemini_model.generate_content(
+        f"Tell me about {topic} and at the end summarize for a quick revision."
+    )
+    
+    text = getattr(response, "text", str(response))
+    print(text)
+
+
+
+if __name__ == "__main__":
+    topic = input("Enter the topic you want to generate blog about:- ")
+    print(f"\t\tAbout {topic} is as follows:-\n")
+
+    content = About(topic)
+    print(content)
+    if content:
+        speak(content)
