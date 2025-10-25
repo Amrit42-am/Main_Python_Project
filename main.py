@@ -4,6 +4,7 @@ import pyttsx3
 import Music_lib
 import AI_mode as AI
 import chatbot as CB
+import Que_ans as QA
 
 recognizer = sr.Recognizer()  
 engine = pyttsx3.init()  
@@ -124,6 +125,34 @@ if __name__ == "__main__":
                 except:
                     print("Sorry, I did not get that. Please repeat.")
                     speak("Sorry, I did not get that. Please repeat.")
+        
+        elif "question answer mode" in command.lower() or "question and answer mode" in command.lower() or "q and a mode" in command.lower() or "qna mode" in command.lower():
+            speak("Activating Question Answer mode.")
+            print("Activating Question Answer mode.")
+            speak("Please state your question.")
+            while True:
+                try:
+                    with sr.Microphone() as source5:
+                        speak("Listening for your question...")
+                        print("Listening for your question...")
+                        r.adjust_for_ambient_noise(source5, duration=1)
+                        audio_text4 = r.listen(source5, timeout=10, phrase_time_limit=5)
+                        question = r.recognize_google(audio_text4)
+                    if "exit question answer mode" in question.lower() or "exit" in question.lower() or "quit" in question.lower() or "exit qna mode" in question.lower():
+                        speak("Exiting Question Answer mode.")
+                        print("Exiting Question Answer mode.")
+                        speak("Now returning to normal mode.")
+                        print("Now returning to normal mode....")
+                        print("\n")
+                        speak("Normal mode activated.")
+                        break
+                    else:
+                        speak(f"Answering the question: {question}")
+                        print(f"\t\tAnswer of the question '{question}' is as follows:-\n")
+                        QA.QnA(question)
+                except:
+                    print("Sorry, I did not get that. Please repeat the question.")
+                    speak("Sorry, I did not get that. Please repeat the question.")
         
         
         # elif "tell me about" in command.lower():
